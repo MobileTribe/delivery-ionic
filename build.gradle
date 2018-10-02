@@ -72,7 +72,7 @@ delivery {
       branch releaseBranch
       changeProperties newVersion, newVersionId
       add "version.properties"
-      commit "chore(version): Update to new version $releaseVersion and versionId $newVersionId", true
+      commit "chore(version): Update to new version $newVersion and versionId $newVersionId", true
       push
 
       step 'mergeDevelop', "Merge release branch to develop"
