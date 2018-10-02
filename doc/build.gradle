@@ -2,6 +2,7 @@ plugins {
     id 'org.asciidoctor.convert' version '1.5.7'
 }
 
+
 def prop = ant {
     property(file: '../version.properties')
 }
@@ -12,7 +13,7 @@ asciidoctor {
     sourceDir './adoc/'
     separateOutputDirs false
     sources {
-        include 'tuto.adoc'
+        include 'index.adoc'
     }
     outputDir './html/'
     attributes 'source-highlighter': 'coderay',
@@ -21,4 +22,23 @@ asciidoctor {
             idseparator: '-',
             deliveryVersion: "${prop.getProperty('version')}",
             generationDate: "${new Date()}"
+}
+
+
+
+apply plugin: "com.leroymerlin.delivery"
+
+
+//delivery {
+//  dockerRegistries {
+//    homeRegistry {
+//      propertiesFile = file("path/to/my/registry.properties")
+//    }
+//  }
+//}
+
+
+task("buildDocImage", type: DockerBuild, dependsOn: ["asciidoctor"]){
+  registry = "homeRegistry"
+  imageName = "ionic-doc-image"
 }

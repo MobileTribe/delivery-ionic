@@ -1,0 +1,84 @@
+import java.util.regex.Matcher
+
+buildscript {
+  ext {
+    deliveryVersion = "3.2.1-SNAPSHOT"
+  }
+
+  repositories {
+    mavenLM()
+    jcenter()
+  }
+
+  dependencies {
+    classpath "com.leroymerlin.plugins:delivery-plugin:$deliveryVersion"
+  }
+}
+apply plugin: 'com.leroymerlin.delivery'
+
+
+
+delivery {
+
+  signingProperties {
+    android {
+      propertiesFile = file("${System.properties['user.home']}/.gradle/signing.properties")
+    }
+    ios {
+      propertiesFile = file("${System.properties['user.home']}/.gradle/signing_ios.properties")
+    }
+  }
+
+
+  archiveRepositories = {
+    maven {
+      url uri("${System.properties['user.home']}/archives")
+    }
+  }
+
+  linkedSubModules = [":doc"]
+
+
+  flows {
+
+    releaseGitFlow {
+      def releaseVersion = project.version - "-SNAPSHOT"
+      def matcher = releaseVersion =~ /(\d+)([^\d]*$)/
+      def newVersion = matcher.replaceAll("${(matcher[0][1] as int) + 1}${matcher[0][2]}") + "-SNAPSHOT"
+      def newVersionId = Integer.parseInt(project.versionId as String) + 1
+      def releaseBranch = "release/${project.versionId}-$releaseVersion"
+
+      branch "develop"
+
+      step 'prepareReleaseBranch', "prepare branch $releaseBranch"
+      branch releaseBranch, true
+      changeProperties releaseVersion
+      add "version.properties"
+      commit "chore(version): Update version to $releaseVersion", true
+
+
+      step 'build', 'build and archive'
+      build
+
+      step 'stepMergeToBaseBranch', 'merge to master branch'
+      branch "master"
+      merge releaseBranch
+      push
+      tag "$project.artifact-$project.versionId-$releaseVersion"
+      pushTag
+
+
+      step 'updateVersion', "Update version to $newVersionId - $newVersion"
+      branch releaseBranch
+      changeProperties newVersion, newVersionId
+      add "version.properties"
+      commit "chore(version): Update to new version $releaseVersion and versionId $newVersionId", true
+      push
+
+      step 'mergeDevelop', "Merge release branch to develop"
+      branch "develop"
+      merge releaseBranch
+      push
+    }
+  }
+}
