@@ -59,6 +59,7 @@ delivery {
 
       step 'build', 'build and archive'
       build
+      discardChange
 
       step 'stepMergeToBaseBranch', 'merge to master branch'
       branch "master"
