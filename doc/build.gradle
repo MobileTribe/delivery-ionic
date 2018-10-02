@@ -29,13 +29,13 @@ asciidoctor {
 apply plugin: "com.leroymerlin.delivery"
 
 
-//delivery {
-//  dockerRegistries {
-//    homeRegistry {
-//      propertiesFile = file("path/to/my/registry.properties")
-//    }
-//  }
-//}
+delivery {
+  dockerRegistries {
+    homeRegistry {
+      //propertiesFile = file("path/to/my/registry.properties")
+    }
+  }
+}
 
 
 task("buildDocImage", type: DockerBuild, dependsOn: ["asciidoctor"]){
