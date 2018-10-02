@@ -1,0 +1,6 @@
+= Tutorial
+
+Ionic app v{deliveryVersion}, {generationDate}
+
+
+== Last version {deliveryVersion}
