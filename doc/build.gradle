@@ -20,7 +20,7 @@ asciidoctor {
             toc: 'left',
             idprefix: '',
             idseparator: '-',
-            deliveryVersion: "${prop.getProperty('version')}",
+            deliveryVersion: "${prop.getProperty('version') - "-SNAPSHOT"}",
             generationDate: "${new Date()}"
 }
 
