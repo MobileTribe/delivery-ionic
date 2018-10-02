@@ -1,0 +1,7 @@
+{
+  "name": "delivery-ionic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
