@@ -41,7 +41,7 @@ delivery {
 
   flows {
 
-    releaseGit {
+    release {
       def releaseVersion = project.version - "-SNAPSHOT"
       def matcher = releaseVersion =~ /(\d+)([^\d]*$)/
       def newVersion = matcher.replaceAll("${(matcher[0][1] as int) + 1}${matcher[0][2]}") + "-SNAPSHOT"
