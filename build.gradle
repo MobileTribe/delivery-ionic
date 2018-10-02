@@ -73,6 +73,7 @@ delivery {
       branch releaseBranch
       changeProperties newVersion, newVersionId
       add "version.properties"
+      add "config.xml"
       commit "chore(version): Update to new version $newVersion and versionId $newVersionId", true
       push
 
