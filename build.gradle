@@ -2,11 +2,10 @@ import java.util.regex.Matcher
 
 buildscript {
   ext {
-    deliveryVersion = "3.2.1-SNAPSHOT"
+    deliveryVersion = "3.2.2"
   }
 
   repositories {
-    mavenLM()
     jcenter()
   }
 
